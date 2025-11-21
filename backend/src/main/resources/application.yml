@@ -1,0 +1,35 @@
+spring:
+  application:
+    name: finance-ai-backend
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/finance_ai
+    username: finance_user
+    password: super-secret
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY:dummy}
+      embedding:
+        options:
+          model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        table-name: document_chunks
+        index-type: hnsw
+        distance-type: cosine
+
+server:
+  port: 8080
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-me-change-me-change-me-change-me}
+    expiration-minutes: ${JWT_EXPIRATION_MINUTES:60}

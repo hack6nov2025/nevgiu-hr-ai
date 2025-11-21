@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: finance_ai
+      POSTGRES_USER: finance_user
+      POSTGRES_PASSWORD: super-secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/finance_ai
+      SPRING_DATASOURCE_USERNAME: finance_user
+      SPRING_DATASOURCE_PASSWORD: super-secret
+      OPENAI_API_KEY: your-openai-key
+      JWT_SECRET: change-me-change-me-change-me-change-me
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend

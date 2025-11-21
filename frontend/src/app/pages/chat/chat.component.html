@@ -1,0 +1,53 @@
+<div class="chat-shell">
+  <aside class="chat-sidebar app-card">
+    <div class="sidebar-header">
+      <h3>Conversations</h3>
+      <button class="btn-secondary"
+              (click)="selectedConversationId = null; messages = []">
+        New chat
+      </button>
+    </div>
+
+    <ul class="conversation-list">
+      <li
+        *ngFor="let conv of conversations"
+        [class.active]="conv.id === selectedConversationId"
+        (click)="selectConversation(conv)">
+        <span class="title">
+          {{ conv.title || ('Chat ' + conv.id) }}
+        </span>
+      </li>
+    </ul>
+  </aside>
+
+  <section class="chat-main app-card">
+    <div class="messages">
+      <div
+        *ngFor="let msg of messages"
+        [class.user]="msg.sender === 'USER'"
+        [class.assistant]="msg.sender === 'ASSISTANT'"
+        class="message-bubble">
+        <div class="sender">
+          {{ msg.sender === 'USER' ? 'You' : 'AI' }}
+        </div>
+        <div class="content">
+          {{ msg.content }}
+        </div>
+      </div>
+    </div>
+
+    <form class="input-area" (ngSubmit)="send()">
+      <textarea
+        [(ngModel)]="inputMessage"
+        name="message"
+        placeholder="Ask me something about finance or banking..."
+        rows="2"></textarea>
+
+      <button class="btn-primary"
+              type="submit"
+              [disabled]="loading">
+        {{ loading ? 'Thinking...' : 'Send' }}
+      </button>
+    </form>
+  </section>
+</div>
