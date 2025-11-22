@@ -46,7 +46,7 @@ jobs:
             docker pull $BACKEND_IMAGE:${{ github.ref_name }}
             docker pull $FRONTEND_IMAGE:${{ github.ref_name }}
 
-            sed -i "s|your-org/finance-ai-backend:latest|$BACKEND_IMAGE:${{ github.ref_name }}|g" docker-compose.prod.yml
-            sed -i "s|your-org/finance-ai-frontend:latest|$FRONTEND_IMAGE:${{ github.ref_name }}|g" docker-compose.prod.yml
+            sed -i "s|${{ github.repository }}/finance-ai-backend:latest|$BACKEND_IMAGE:${{ github.ref_name }}|g" docker-compose.prod.yml
+            sed -i "s|${{ github.repository }}/finance-ai-frontend:latest|$FRONTEND_IMAGE:${{ github.ref_name }}|g" docker-compose.prod.yml
 
             docker compose -f docker-compose.prod.yml --env-file .env.prod up -d
